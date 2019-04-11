@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sk.waternetwork.mapper.CompanyMapper">
+    <resultMap id="BaseResultMap" type="com.sk.waternetwork.model.Company">
+        <id column="CompanyCode" jdbcType="NVARCHAR" property="companycode"/>
+        <result column="Name" jdbcType="NVARCHAR" property="name"/>
+        <result column="Address" jdbcType="NVARCHAR" property="address"/>
+        <result column="Contact" jdbcType="NVARCHAR" property="contact"/>
+        <result column="ContactPhone" jdbcType="NVARCHAR" property="contactphone"/>
+        <result column="ContactMail" jdbcType="NVARCHAR" property="contactmail"/>
+        <result column="ParentCode" jdbcType="NVARCHAR" property="parentcode"/>
+        <result column="Creator" jdbcType="NVARCHAR" property="creator"/>
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier"/>
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime"/>
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    CompanyCode, Name, Address, Contact, ContactPhone, ContactMail, ParentCode, Creator, 
+    CreateTime, Modifier, ModifyTime, ValidStatus
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from waternetDB..Company
+        where CompanyCode = #{companycode,jdbcType=NVARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from waternetDB..Company
+        where CompanyCode = #{companycode,jdbcType=NVARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.sk.waternetwork.model.Company">
+        insert into waternetDB..Company (CompanyCode, Name, Address,
+        Contact, ContactPhone, ContactMail,
+        ParentCode, Creator, CreateTime,
+        Modifier, ModifyTime, ValidStatus
+        )
+        values (#{companycode,jdbcType=NVARCHAR}, #{name,jdbcType=NVARCHAR}, #{address,jdbcType=NVARCHAR},
+        #{contact,jdbcType=NVARCHAR}, #{contactphone,jdbcType=NVARCHAR}, #{contactmail,jdbcType=NVARCHAR},
+        #{parentcode,jdbcType=NVARCHAR}, #{creator,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP},
+        #{modifier,jdbcType=NVARCHAR}, #{modifytime,jdbcType=TIMESTAMP}, #{validstatus,jdbcType=INTEGER}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.sk.waternetwork.model.Company">
+        insert into waternetDB..Company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companycode != null  and companycode!='' ">
+                CompanyCode,
+            </if>
+            <if test="name != null  and  name!=''">
+                Name,
+            </if>
+            <if test="address != null and address!=''">
+                Address,
+            </if>
+            <if test="contact != null and contact!=''">
+                Contact,
+            </if>
+            <if test="contactphone != null and contactphone!=''">
+                ContactPhone,
+            </if>
+            <if test="contactmail != null and contactmail!=''">
+                ContactMail,
+            </if>
+            <if test="parentcode != null">
+                ParentCode,
+            </if>
+            <if test="creator != null and creator!=''">
+                Creator,
+            </if>
+            <if test="createtime != null">
+                CreateTime,
+            </if>
+            <if test="modifier != null and modifier!=''">
+                Modifier,
+            </if>
+            <if test="modifytime != null">
+                ModifyTime,
+            </if>
+            <if test="validstatus != null">
+                ValidStatus,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companycode != null and companycode!=''">
+                #{companycode,jdbcType=NVARCHAR},
+            </if>
+            <if test="name != null and  name!=''">
+                #{name,jdbcType=NVARCHAR},
+            </if>
+            <if test="address != null and address!=''">
+                #{address,jdbcType=NVARCHAR},
+            </if>
+            <if test="contact != null and contact!=''">
+                #{contact,jdbcType=NVARCHAR},
+            </if>
+            <if test="contactphone != null and contactphone!=''">
+                #{contactphone,jdbcType=NVARCHAR},
+            </if>
+            <if test="contactmail != null and contactmail!=''">
+                #{contactmail,jdbcType=NVARCHAR},
+            </if>
+            <if test="parentcode != null">
+                #{parentcode,jdbcType=NVARCHAR},
+            </if>
+            <if test="creator != null and creator!=''">
+                #{creator,jdbcType=NVARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null and modifier!=''">
+                #{modifier,jdbcType=NVARCHAR},
+            </if>
+            <if test="modifytime != null">
+                #{modifytime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="validstatus != null">
+                #{validstatus,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.sk.waternetwork.model.Company">
+        update waternetDB..Company
+        <set>
+            <if test="name != null and  name!=''">
+                Name = #{name,jdbcType=NVARCHAR},
+            </if>
+            <if test="address != null and address!=''">
+                Address = #{address,jdbcType=NVARCHAR},
+            </if>
+            <if test="contact != null and  contact!=''">
+                Contact = #{contact,jdbcType=NVARCHAR},
+            </if>
+            <if test="contactphone != null and  contactphone!=''">
+                ContactPhone = #{contactphone,jdbcType=NVARCHAR},
+            </if>
+            <if test="contactmail != null and  contactmail !=''">
+                ContactMail = #{contactmail,jdbcType=NVARCHAR},
+            </if>
+            <!--<if test="parentcode != null">-->
+            <!--ParentCode = #{parentcode,jdbcType=NVARCHAR},-->
+            <!--</if>-->
+            <!--<if test="creator != null and  creator!=''">-->
+                <!--Creator = #{creator,jdbcType=NVARCHAR},-->
+            <!--</if>-->
+            <!--<if test="createtime != null">-->
+                <!--CreateTime = #{createtime,jdbcType=TIMESTAMP},-->
+            <!--</if>-->
+            <if test="modifier != null and  modifier!=''">
+                Modifier = #{modifier,jdbcType=NVARCHAR},
+            </if>
+            <if test="modifytime != null">
+                ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="validstatus != null">
+                ValidStatus = #{validstatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        where CompanyCode = #{companycode,jdbcType=NVARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.sk.waternetwork.model.Company">
+        update waternetDB..Company
+        set Name = #{name,jdbcType=NVARCHAR},
+        Address = #{address,jdbcType=NVARCHAR},
+        Contact = #{contact,jdbcType=NVARCHAR},
+        ContactPhone = #{contactphone,jdbcType=NVARCHAR},
+        ContactMail = #{contactmail,jdbcType=NVARCHAR},
+        ParentCode = #{parentcode,jdbcType=NVARCHAR},
+        Creator = #{creator,jdbcType=NVARCHAR},
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+        Modifier = #{modifier,jdbcType=NVARCHAR},
+        ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+        ValidStatus = #{validstatus,jdbcType=INTEGER}
+        where CompanyCode = #{companycode,jdbcType=NVARCHAR}
+    </update>
+</mapper>

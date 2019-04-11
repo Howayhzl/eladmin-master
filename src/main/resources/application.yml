@@ -1,0 +1,26 @@
+###############################################################################
+## dev 开发环境
+###############################################################################
+## 数据库设置
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://114.116.99.96;DatabaseName=waternetDB
+    username: sa
+    password: ThinkSoft88
+###############################################################################
+## mybatis设置
+mybatis:
+  mapper-locations: classpath*:mapper/*Mapper.xml
+###############################################################################
+## mybatis设置
+pagehelper:
+  helperDialect: sqlserver
+  reasonable: true
+  supportMethodsArguments: true
+  params=count: countSql
+  page-size-zero: true
+  ###############################################################################
+  ## swagger配置
+swagger:
+    enable: true

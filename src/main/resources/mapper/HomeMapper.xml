@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sk.waternetwork.mapper.HomeMapper">
+    <resultMap id="BaseResultMap" type="com.sk.waternetwork.model.PipelineInformation">
+        <id column="Code" jdbcType="NVARCHAR" property="code"/>
+        <result column="Name" jdbcType="NVARCHAR" property="name"/>
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode"/>
+        <result column="Diameter" jdbcType="NVARCHAR" property="diameter"/>
+        <result column="Material" jdbcType="NVARCHAR" property="material"/>
+        <result column="Length" jdbcType="NVARCHAR" property="length"/>
+        <result column="Gis" jdbcType="NVARCHAR" property="gis"/>
+        <result column="Creator" jdbcType="NVARCHAR" property="creator"/>
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier"/>
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime"/>
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        Code, Name, CompanyCode, Diameter, Material, Length, Gis, Creator, CreateTime,
+        Modifier, ModifyTime, ValidStatus
+    </sql>
+    <select id="getPipelineByCompanyCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select *
+        from waternetDB..PipelineInformation
+        where CompanyCode = #{code,jdbcType=NVARCHAR}
+    </select>
+    <resultMap id="BaseResultMap1" type="com.sk.waternetwork.model.AreasInfo">
+        <id column="AreaCode" jdbcType="NVARCHAR" property="areacode"/>
+        <result column="AreaName" jdbcType="NVARCHAR" property="areaname"/>
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode"/>
+        <result column="ParentNode" jdbcType="NVARCHAR" property="parentnode"/>
+        <result column="PersonLiable" jdbcType="NVARCHAR" property="personliable"/>
+        <result column="Phone" jdbcType="NVARCHAR" property="phone"/>
+        <result column="Creator" jdbcType="NVARCHAR" property="creator"/>
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier"/>
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime"/>
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus"/>
+    </resultMap>
+    <sql id="Base_Column_List1">
+        AreaCode, AreaName, CompanyCode, ParentNode, PersonLiable, Phone, Creator, CreateTime,
+        Modifier, ModifyTime, ValidStatus
+    </sql>
+    <select id="getAreasByCompanyCode" parameterType="java.lang.String" resultMap="BaseResultMap1">
+        select
+        <include refid="Base_Column_List1"/>
+        from waternetDB..AreasInfo
+        where CompanyCode = #{code,jdbcType=NVARCHAR}
+    </select>
+    <resultMap id="BaseResultMap2" type="com.sk.waternetwork.viewModel.WaterpumpRealtimeModel">
+        <id column="Code" jdbcType="NVARCHAR" property="code"/>
+        <result column="Name" jdbcType="NVARCHAR" property="name"/>
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode"/>
+        <result column="DeviceCode" jdbcType="NVARCHAR" property="devicecode"/>
+        <result column="Manufactor" jdbcType="NVARCHAR" property="manufactor"/>
+        <result column="ModelNumber" jdbcType="NVARCHAR" property="modelnumber"/>
+        <result column="Caliber" jdbcType="NVARCHAR" property="caliber"/>
+        <result column="Material" jdbcType="NVARCHAR" property="material"/>
+        <result column="Gis" jdbcType="NVARCHAR" property="gis"/>
+        <result column="Address" jdbcType="NVARCHAR" property="address"/>
+        <result column="State" jdbcType="INTEGER" property="state"/>
+    </resultMap>
+    <sql id="Base_Column_List2">
+        Code, Name, CompanyCode, DeviceCode, Manufactor, ModelNumber, Caliber, Material,
+    Gis, Address, State
+    </sql>
+    <select id="getWaterpumpRealtimeModelByCode" parameterType="java.lang.String" resultMap="BaseResultMap2">
+        select
+        <include refid="Base_Column_List2"/>
+        from waternetDB..Waterpump
+        where Code = #{code,jdbcType=NVARCHAR}
+    </select>
+    <resultMap id="BaseResultMap3" type="com.sk.waternetwork.viewModel.WaterRealtimeModel">
+        <id column="Code" jdbcType="NVARCHAR" property="code"/>
+        <result column="Name" jdbcType="NVARCHAR" property="name"/>
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode"/>
+        <result column="DeviceCode" jdbcType="NVARCHAR" property="devicecode"/>
+        <result column="Manufactor" jdbcType="NVARCHAR" property="manufactor"/>
+        <result column="ModelNumber" jdbcType="NVARCHAR" property="modelnumber"/>
+        <result column="Caliber" jdbcType="NVARCHAR" property="caliber"/>
+        <result column="Material" jdbcType="NVARCHAR" property="material"/>
+        <result column="Gis" jdbcType="NVARCHAR" property="gis"/>
+        <result column="Address" jdbcType="NVARCHAR" property="address"/>
+        <result column="State" jdbcType="INTEGER" property="state"/>
+    </resultMap>
+    <sql id="Base_Column_List3">
+        Code, Name, CompanyCode, DeviceCode, Manufactor, ModelNumber, Caliber, Material,
+    Gis, Address, State
+    </sql>
+    <select id="getWaterRealtimeModelByCode" parameterType="java.lang.String" resultMap="BaseResultMap3">
+        select
+        <include refid="Base_Column_List3"/>
+        from waternetDB..Water
+        where Code = #{code,jdbcType=NVARCHAR}
+    </select>
+    <resultMap id="BaseResultMap4" type="com.sk.waternetwork.viewModel.FlowmeterRealtimeModel">
+        <id column="Code" jdbcType="NVARCHAR" property="code"/>
+        <result column="Name" jdbcType="NVARCHAR" property="name"/>
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode"/>
+        <result column="DeviceCode" jdbcType="NVARCHAR" property="devicecode"/>
+        <result column="Manufactor" jdbcType="NVARCHAR" property="manufactor"/>
+        <result column="ModelNumber" jdbcType="NVARCHAR" property="modelnumber"/>
+        <result column="Caliber" jdbcType="NVARCHAR" property="caliber"/>
+        <result column="Material" jdbcType="NVARCHAR" property="material"/>
+        <result column="Gis" jdbcType="NVARCHAR" property="gis"/>
+        <result column="Address" jdbcType="NVARCHAR" property="address"/>
+        <result column="State" jdbcType="INTEGER" property="state"/>
+    </resultMap>
+    <sql id="Base_Column_List4">
+        Code, Name, CompanyCode, DeviceCode, Manufactor, ModelNumber, Caliber, Material,
+    Gis, Address, State
+    </sql>
+    <select id="getFlowmeterRealtimeModelByCode" parameterType="java.lang.String" resultMap="BaseResultMap4">
+        select
+        <include refid="Base_Column_List4"/>
+        from waternetDB..Flowmeter
+        where Code = #{code,jdbcType=NVARCHAR}
+    </select>
+    <resultMap id="BaseResultMap5" type="com.sk.waternetwork.model.SiteEquipmentRelationship">
+        <id column="Code" jdbcType="NVARCHAR" property="code"/>
+        <result column="SiteCode" jdbcType="NVARCHAR" property="sitecode"/>
+        <result column="EquipmentCode" jdbcType="NVARCHAR" property="equipmentcode"/>
+        <result column="Type" jdbcType="INTEGER" property="type"/>
+        <result column="Creator" jdbcType="NVARCHAR" property="creator"/>
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier"/>
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime"/>
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus"/>
+    </resultMap>
+    <sql id="Base_Column_List5">
+        Code, SiteCode, EquipmentCode, Type, Creator, CreateTime, Modifier, ModifyTime,
+        ValidStatus
+    </sql>
+    <select id="getSiteEquipmentRelationshipBySiteCode" parameterType="java.lang.String" resultMap="BaseResultMap5">
+        select
+        <include refid="Base_Column_List5"/>
+        from waternetDB..SiteEquipmentRelationship
+        where SiteCode = #{code,jdbcType=NVARCHAR}
+    </select>
+    <resultMap id="BaseResultMap6" type="com.sk.waternetwork.model.Site">
+        <id column="Code" jdbcType="NVARCHAR" property="code"/>
+        <result column="Name" jdbcType="NVARCHAR" property="name"/>
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode"/>
+        <result column="Address" jdbcType="NVARCHAR" property="address"/>
+        <result column="Frequency" jdbcType="INTEGER" property="frequency"/>
+        <result column="Gis" jdbcType="NVARCHAR" property="gis"/>
+        <result column="Personliable" jdbcType="NVARCHAR" property="personliable"/>
+        <result column="Phone" jdbcType="NVARCHAR" property="phone"/>
+        <result column="Creator" jdbcType="NVARCHAR" property="creator"/>
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier"/>
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime"/>
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus"/>
+    </resultMap>
+    <sql id="Base_Column_List6">
+        Code, Name, CompanyCode, Address, Frequency, Gis, Personliable, Phone, Creator,
+        CreateTime, Modifier, ModifyTime, ValidStatus
+    </sql>
+    <select id="getSiteByCode" parameterType="java.lang.String" resultMap="BaseResultMap6">
+        select
+        <include refid="Base_Column_List6"/>
+        from waternetDB..Site
+        where Code = #{code,jdbcType=NVARCHAR} AND CompanyCode =#{companyCode,jdbcType=NVARCHAR}
+    </select>
+    <resultMap id="BaseResultMap7" type="com.sk.waternetwork.model.EquipmentParam">
+        <id column="Code" jdbcType="NVARCHAR" property="code"/>
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode"/>
+        <result column="EquipmentCode" jdbcType="NVARCHAR" property="equipmentcode"/>
+        <result column="ParamField" jdbcType="NVARCHAR" property="paramfield"/>
+        <result column="ParamName" jdbcType="NVARCHAR" property="paramname"/>
+        <result column="ThresholdMax" jdbcType="DOUBLE" property="thresholdmax"/>
+        <result column="ThresholdMin" jdbcType="DOUBLE" property="thresholdmin"/>
+        <result column="Unit" jdbcType="NVARCHAR" property="unit"/>
+        <result column="Creator" jdbcType="NVARCHAR" property="creator"/>
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier"/>
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime"/>
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus"/>
+    </resultMap>
+    <sql id="Base_Column_List7">
+        Code, CompanyCode, EquipmentCode, ParamField, ParamName, ThresholdMax, ThresholdMin,
+        Unit, Creator, CreateTime, Modifier, ModifyTime, ValidStatus
+    </sql>
+    <select id="getEquipmentParamByEquipmentCode" parameterType="java.lang.String" resultMap="BaseResultMap7">
+        select
+        <include refid="Base_Column_List7"/>
+        from waternetDB..EquipmentParam
+        where EquipmentCode = #{code,jdbcType=NVARCHAR} AND ValidStatus = 1
+    </select>
+    <insert id="insertWarning" parameterType="com.sk.waternetwork.model.Warning">
+        insert into waternetDB..Warning (Code, DeviceCode, DeviceName,
+        CompanyCode, PointCode, PointName,
+        WarningInfo, MonitoringType, WarningValue,
+        Type, WarningTime, CreateTime, IsRead,
+        ValidStatus)
+        values
+        <foreach collection="list" item="wdSolr" index="index"
+                 separator=",">
+            (#{wdSolr.code,jdbcType=NVARCHAR}, #{wdSolr.devicecode,jdbcType=NVARCHAR},
+            #{wdSolr.devicename,jdbcType=NVARCHAR},
+            #{wdSolr.companycode,jdbcType=NVARCHAR}, #{wdSolr.pointcode,jdbcType=NVARCHAR},
+            #{wdSolr.pointname,jdbcType=NVARCHAR},
+            #{wdSolr.warninginfo,jdbcType=NVARCHAR}, #{wdSolr.monitoringtype,jdbcType=NVARCHAR},
+            #{wdSolr.warningvalue,jdbcType=NVARCHAR},
+            #{wdSolr.type,jdbcType=INTEGER}, #{wdSolr.warningtime,jdbcType=TIMESTAMP},
+            #{wdSolr.createtime,jdbcType=TIMESTAMP},#{wdSolr.isread,jdbcType=INTEGER},
+            #{wdSolr.validstatus,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+    <resultMap id="BaseResultMap8" type="com.sk.waternetwork.model.Warning">
+        <id column="Code" jdbcType="NVARCHAR" property="code"/>
+        <result column="DeviceCode" jdbcType="NVARCHAR" property="devicecode"/>
+        <result column="DeviceName" jdbcType="NVARCHAR" property="devicename"/>
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode"/>
+        <result column="PointCode" jdbcType="NVARCHAR" property="pointcode"/>
+        <result column="PointName" jdbcType="NVARCHAR" property="pointname"/>
+        <result column="WarningInfo" jdbcType="NVARCHAR" property="warninginfo"/>
+        <result column="MonitoringType" jdbcType="NVARCHAR" property="monitoringtype"/>
+        <result column="WarningValue" jdbcType="NVARCHAR" property="warningvalue"/>
+        <result column="Type" jdbcType="INTEGER" property="type"/>
+        <result column="WarningTime" jdbcType="TIMESTAMP" property="warningtime"/>
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="IsRead" jdbcType="INTEGER" property="isread"/>
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus"/>
+    </resultMap>
+    <sql id="Base_Column_List8">
+        Code, DeviceCode, DeviceName, CompanyCode, PointCode, PointName, WarningInfo, MonitoringType,
+        WarningValue, Type, WarningTime, CreateTime, IsRead, ValidStatus
+    </sql>
+    <select id="getWarningByCompanyCode" parameterType="java.lang.String" resultMap="BaseResultMap8">
+        select
+        <include refid="Base_Column_List8"/>
+        from waternetDB..Warning
+        where CompanyCode=#{code,jdbcType=NVARCHAR} AND CreateTime &gt;=convert(varchar(10),Getdate(),120) and
+        CreateTime
+        &lt; convert(varchar(10),dateadd(d,1,Getdate()),120)
+    </select>
+    <select id="getWarninglistByCompanyCode" parameterType="java.lang.String" resultMap="BaseResultMap8">
+        select
+        <include refid="Base_Column_List8"/>
+        from waternetDB..Warning
+        where CompanyCode=#{code,jdbcType=NVARCHAR} ORDER BY IsRead DESC,CreateTime DESC
+    </select>
+    <select id="getCountByCompanyCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select
+        COUNT(Code)
+        from waternetDB..Warning
+        where CompanyCode=#{code,jdbcType=NVARCHAR} AND IsRead = 3
+    </select>
+    <select id="getPipeDiameterByCompanyCode" parameterType="java.lang.String" resultType="java.lang.String">
+        select Diameter from PipelineInformation
+        where CompanyCode =#{companyCode,jdbcType=NVARCHAR} group by Diameter order by Diameter*1 ASC
+    </select>
+
+</mapper>

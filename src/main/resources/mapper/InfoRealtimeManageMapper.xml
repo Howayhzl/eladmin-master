@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sk.waternetwork.mapper.InfoRealtimeManageMapper">
+    <resultMap id="BaseResultMap" type="com.sk.waternetwork.model.Company">
+        <id column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="Name" jdbcType="NVARCHAR" property="name" />
+        <result column="Address" jdbcType="NVARCHAR" property="address" />
+        <result column="Contact" jdbcType="NVARCHAR" property="contact" />
+        <result column="ContactPhone" jdbcType="NVARCHAR" property="contactphone" />
+        <result column="ContactMail" jdbcType="NVARCHAR" property="contactmail" />
+        <result column="ParentCode" jdbcType="NVARCHAR" property="parentcode" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        CompanyCode, Name, Address, Contact, ContactPhone, ContactMail, ParentCode, Creator,
+        CreateTime, Modifier, ModifyTime, ValidStatus
+    </sql>
+    <select id="getSubsidiaryByCompanyCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from waternetDB..Company
+        where ParentCode = #{code,jdbcType=NVARCHAR}
+    </select>
+</mapper>

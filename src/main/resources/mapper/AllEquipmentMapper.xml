@@ -1,0 +1,1093 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sk.waternetwork.mapper.AllEquipmentMapper">
+    <resultMap id="BaseResultMap" type="com.sk.waternetwork.viewModel.FlowmeterNameViewModel">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="UserCode" jdbcType="NVARCHAR" property="usercode" />
+        <result column="UserName" jdbcType="NVARCHAR" property="username" />
+        <result column="Name" jdbcType="NVARCHAR" property="name" />
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="DeviceCode" jdbcType="NVARCHAR" property="devicecode" />
+        <result column="Manufactor" jdbcType="NVARCHAR" property="manufactor" />
+        <result column="ModelNumber" jdbcType="NVARCHAR" property="modelnumber" />
+        <result column="Caliber" jdbcType="NVARCHAR" property="caliber" />
+        <result column="Material" jdbcType="NVARCHAR" property="material" />
+        <result column="Gis" jdbcType="NVARCHAR" property="gis" />
+        <result column="Address" jdbcType="NVARCHAR" property="address" />
+        <result column="State" jdbcType="INTEGER" property="state" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+
+
+    <resultMap id="BaseResultMapflower" type="com.sk.waternetwork.model.Flowmeter">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="Name" jdbcType="NVARCHAR" property="name" />
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="DeviceCode" jdbcType="NVARCHAR" property="devicecode" />
+        <result column="Manufactor" jdbcType="NVARCHAR" property="manufactor" />
+        <result column="ModelNumber" jdbcType="NVARCHAR" property="modelnumber" />
+        <result column="Caliber" jdbcType="NVARCHAR" property="caliber" />
+        <result column="Material" jdbcType="NVARCHAR" property="material" />
+        <result column="Gis" jdbcType="NVARCHAR" property="gis" />
+        <result column="Address" jdbcType="NVARCHAR" property="address" />
+        <result column="State" jdbcType="INTEGER" property="state" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    Code, Name, CompanyCode, DeviceCode, Manufactor, ModelNumber, Caliber, Material,
+    Gis, Address, State, Creator, CreateTime, Modifier, ModifyTime, ValidStatus
+  </sql>
+
+
+    <sql id="Base_Column_Listsss">
+   a.Code, a.Name, a.CompanyCode, a.DeviceCode, a.Manufactor, a.ModelNumber, a.Caliber, a.Material,
+    a.Gis, a.Address, a.State, a.Creator, a.CreateTime, a.Modifier, a.ModifyTime, a.ValidStatus,
+    b.UserCode as  UserCode, b.UserName as UserName
+  </sql>
+
+    <delete id="deleteFlowmeter" parameterType="java.lang.String">
+        delete from waternetDB..Flowmeter
+       where  Code=#{code,jdbcType=NVARCHAR}
+    </delete>
+
+    <select id="selectFlowmeterByCompanyCode" resultMap="BaseResultMapflower">
+        select
+        <include refid="Base_Column_List"/>
+        from waternetDB..Flowmeter
+        where CompanyCode=#{companycode,jdbcType=NVARCHAR}
+        order by CreateTime desc
+
+    </select>
+
+
+    <!--  模糊查询-->
+
+    <select id="selectFlowmeterByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_Listsss"/>
+        from waternetDB..Flowmeter as a
+        left join waternetDB..Users  as b on a.Creator=b.UserCode
+        where a.Name like  '%'+#{name,jdbcType=NVARCHAR}+'%' and a.CompanyCode=#{companycode,jdbcType=NVARCHAR}
+        order by a.CreateTime desc
+    </select>
+
+
+
+<!--
+
+        <resultMap id="BaseResultMap2" type="com.sk.waternetwork.model.Valve">
+            <id column="Code" jdbcType="NVARCHAR" property="code" />
+            <result column="Name" jdbcType="NVARCHAR" property="name" />
+            <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+            <result column="DeviceCode" jdbcType="NVARCHAR" property="devicecode" />
+            <result column="Manufactor" jdbcType="NVARCHAR" property="manufactor" />
+            <result column="ModelNumber" jdbcType="NVARCHAR" property="modelnumber" />
+            <result column="Caliber" jdbcType="NVARCHAR" property="caliber" />
+            <result column="Material" jdbcType="NVARCHAR" property="material" />
+            <result column="IsPressure" jdbcType="BIT" property="ispressure" />
+            <result column="Gis" jdbcType="NVARCHAR" property="gis" />
+            <result column="State" jdbcType="INTEGER" property="state" />
+            <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+            <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+            <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+            <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+            <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+        </resultMap>
+        <sql id="Base_Column_List2">
+        Code, Name, CompanyCode, Caliber, Material, IsPressure, Gis, State, Creator,
+        CreateTime, Modifier, ModifyTime, ValidStatus
+      </sql>
+
+
+        <select id="selectValveByCompanyCode" resultMap="BaseResultMap2">
+            select
+            <include refid="Base_Column_List2"/>
+            from waternetDB..Valve
+            where CompanyCode=#{companycode,jdbcType=NVARCHAR}
+            order by CreateTime desc
+
+        </select>
+    -->
+
+
+
+    <resultMap id="BaseResultMap3" type="com.sk.waternetwork.viewModel.WaterNameViewModel">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="UserCode" jdbcType="NVARCHAR" property="usercode" />
+        <result column="UserName" jdbcType="NVARCHAR" property="username" />
+        <result column="Name" jdbcType="NVARCHAR" property="name" />
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="DeviceCode" jdbcType="NVARCHAR" property="devicecode" />
+        <result column="Manufactor" jdbcType="NVARCHAR" property="manufactor" />
+        <result column="ModelNumber" jdbcType="NVARCHAR" property="modelnumber" />
+        <result column="Caliber" jdbcType="NVARCHAR" property="caliber" />
+        <result column="Material" jdbcType="NVARCHAR" property="material" />
+        <result column="Gis" jdbcType="NVARCHAR" property="gis" />
+        <result column="Address" jdbcType="NVARCHAR" property="address" />
+        <result column="State" jdbcType="INTEGER" property="state" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+
+
+    <resultMap id="BaseResultMapwater" type="com.sk.waternetwork.model.Water">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="Name" jdbcType="NVARCHAR" property="name" />
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="DeviceCode" jdbcType="NVARCHAR" property="devicecode" />
+        <result column="Manufactor" jdbcType="NVARCHAR" property="manufactor" />
+        <result column="ModelNumber" jdbcType="NVARCHAR" property="modelnumber" />
+        <result column="Caliber" jdbcType="NVARCHAR" property="caliber" />
+        <result column="Material" jdbcType="NVARCHAR" property="material" />
+        <result column="Gis" jdbcType="NVARCHAR" property="gis" />
+        <result column="Address" jdbcType="NVARCHAR" property="address" />
+        <result column="State" jdbcType="INTEGER" property="state" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+
+    <sql id="Base_Column_List3">
+    Code, Name, CompanyCode, DeviceCode, Manufactor, ModelNumber, Caliber, Material,
+    Gis, Address, State, Creator, CreateTime, Modifier, ModifyTime, ValidStatus
+  </sql>
+
+
+    <sql id="Base_Column_Listss">
+   a.Code, a.Name, a.CompanyCode, a.DeviceCode, a.Manufactor, a.ModelNumber, a.Caliber, a.Material,
+    a.Gis, a.Address, a.State, a.Creator, a.CreateTime, a.Modifier, a.ModifyTime, a.ValidStatus,
+    b.UserCode as  UserCode, b.UserName as UserName
+  </sql>
+
+    <delete id="deleteWater" parameterType="java.lang.String">
+        delete from waternetDB..Water
+       where  Code=#{code,jdbcType=NVARCHAR}
+    </delete>
+
+    <select id="selectWaterByCompanyCode" resultMap="BaseResultMapwater">
+        select
+        <include refid="Base_Column_List3"/>
+        from waternetDB..Water
+        where CompanyCode=#{companycode,jdbcType=NVARCHAR}
+        order by CreateTime desc
+
+    </select>
+
+    <!--  模糊查询-->
+
+    <select id="selectWaterByName" resultMap="BaseResultMap3">
+        select
+        <include refid="Base_Column_Listss"/>
+        from waternetDB..Water as a
+        left join waternetDB..Users  as b on a.Creator=b.UserCode
+        where a.Name like  '%'+#{name,jdbcType=NVARCHAR}+'%' and a.CompanyCode=#{companycode,jdbcType=NVARCHAR}
+        order by a.CreateTime desc
+    </select>
+
+
+
+
+
+    <resultMap id="BaseResultMapwaterpump" type="com.sk.waternetwork.viewModel.WaterpumpNameViewModel">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="Name" jdbcType="NVARCHAR" property="name" />
+        <result column="UserCode" jdbcType="NVARCHAR" property="usercode" />
+        <result column="UserName" jdbcType="NVARCHAR" property="username" />
+        <result column="Name" jdbcType="NVARCHAR" property="name" />
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="DeviceCode" jdbcType="NVARCHAR" property="devicecode" />
+        <result column="Manufactor" jdbcType="NVARCHAR" property="manufactor" />
+        <result column="ModelNumber" jdbcType="NVARCHAR" property="modelnumber" />
+        <result column="Caliber" jdbcType="NVARCHAR" property="caliber" />
+        <result column="Material" jdbcType="NVARCHAR" property="material" />
+        <result column="Gis" jdbcType="NVARCHAR" property="gis" />
+        <result column="Address" jdbcType="NVARCHAR" property="address" />
+        <result column="State" jdbcType="INTEGER" property="state" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+
+
+
+
+    <resultMap id="BaseResultMap4" type="com.sk.waternetwork.model.Waterpump">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="Name" jdbcType="NVARCHAR" property="name" />
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="DeviceCode" jdbcType="NVARCHAR" property="devicecode" />
+        <result column="Manufactor" jdbcType="NVARCHAR" property="manufactor" />
+        <result column="ModelNumber" jdbcType="NVARCHAR" property="modelnumber" />
+        <result column="Caliber" jdbcType="NVARCHAR" property="caliber" />
+        <result column="Material" jdbcType="NVARCHAR" property="material" />
+        <result column="Gis" jdbcType="NVARCHAR" property="gis" />
+        <result column="Address" jdbcType="NVARCHAR" property="address" />
+        <result column="State" jdbcType="INTEGER" property="state" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+
+    <sql id="Base_Column_List4">
+    Code, Name, CompanyCode, DeviceCode, Manufactor, ModelNumber, Caliber, Material,
+    Gis, Address, State, Creator, CreateTime, Modifier, ModifyTime, ValidStatus
+  </sql>
+
+    <sql id="Base_Column_Lists">
+   a.Code, a.Name, a.CompanyCode, a.DeviceCode, a.Manufactor, a.ModelNumber, a.Caliber, a.Material,
+    a.Gis, a.Address, a.State, a.Creator, a.CreateTime, a.Modifier, a.ModifyTime, a.ValidStatus,
+    b.UserCode as  UserCode, b.UserName as UserName
+  </sql>
+
+
+    <delete id="deleteWaterpump" parameterType="java.lang.String">
+        delete from waternetDB..Waterpump
+       where  Code=#{code,jdbcType=NVARCHAR}
+    </delete>
+
+    <select id="selectWaterpumpByCompanyCode" resultMap="BaseResultMap4">
+        select
+        <include refid="Base_Column_List4"/>
+        from waternetDB..Waterpump
+        where CompanyCode=#{companycode,jdbcType=NVARCHAR}
+        order by CreateTime desc
+
+    </select>
+
+    <!--  模糊查询-->
+
+    <select id="selectWaterpumpByName" resultMap="BaseResultMapwaterpump">
+        select
+        <include refid="Base_Column_Lists"/>
+        from waternetDB..Waterpump as a
+        left join waternetDB..Users  as b on a.Creator=b.UserCode
+        where a.Name like  '%'+#{name,jdbcType=NVARCHAR}+'%' and a.CompanyCode=#{companycode,jdbcType=NVARCHAR}
+        order by a.CreateTime desc
+
+    </select>
+
+
+
+
+
+    <!--<resultMap id="BaseResultMap5" type="com.sk.waternetwork.model.WaterQuality">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="Name" jdbcType="NVARCHAR" property="name" />
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="DeviceCode" jdbcType="NVARCHAR" property="devicecode" />
+        <result column="Manufactor" jdbcType="NVARCHAR" property="manufactor" />
+        <result column="ModelNumber" jdbcType="NVARCHAR" property="modelnumber" />
+        <result column="Type" jdbcType="INTEGER" property="type" />
+        <result column="IsPH" jdbcType="BIT" property="isph" />
+        <result column="IsResidualChlorine" jdbcType="BIT" property="isresidualchlorine" />
+        <result column="IsConductivity" jdbcType="BIT" property="isconductivity" />
+        <result column="IsDissolvedOxygen" jdbcType="BIT" property="isdissolvedoxygen" />
+        <result column="IsTemperature" jdbcType="BIT" property="istemperature" />
+        <result column="IsPressure" jdbcType="BIT" property="ispressure" />
+        <result column="IsORP" jdbcType="BIT" property="isorp" />
+        <result column="IsTurbidity" jdbcType="BIT" property="isturbidity" />
+        <result column="IsAmmoniaNitrogen" jdbcType="BIT" property="isammonianitrogen" />
+        <result column="IsSalinity" jdbcType="BIT" property="issalinity" />
+        <result column="IsWaterHardness" jdbcType="BIT" property="iswaterhardness" />
+        <result column="Gis" jdbcType="NVARCHAR" property="gis" />
+        <result column="State" jdbcType="INTEGER" property="state" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+    <sql id="Base_Column_List5">
+    Code, Name, CompanyCode, Type, IsPH, IsResidualChlorine, IsConductivity, IsDissolvedOxygen,
+    IsTemperature, IsPressure, IsORP, IsTurbidity, IsAmmoniaNitrogen, IsSalinity, IsWaterHardness,
+    Gis, State, Creator, CreateTime, Modifier, ModifyTime, ValidStatus
+  </sql>
+
+
+
+    <select id="selectWaterQualityByCompanyCode" resultMap="BaseResultMap5">
+        select
+        <include refid="Base_Column_List5"/>
+        from waternetDB..WaterQuality
+        where CompanyCode=#{companycode,jdbcType=NVARCHAR}
+        order by CreateTime desc
+
+    </select>
+
+-->
+    <!--报警参数-->
+
+
+        <!--<resultMap id="BaseResultMap6" type="com.sk.waternetwork.model.ValveWarningThreshold">
+            <id column="Code" jdbcType="NVARCHAR" property="code" />
+            <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+            <result column="Caliber" jdbcType="NVARCHAR" property="caliber" />
+            <result column="Material" jdbcType="NVARCHAR" property="material" />
+            <result column="PressureMin" jdbcType="NVARCHAR" property="pressuremin" />
+            <result column="PressureMax" jdbcType="NVARCHAR" property="pressuremax" />
+            <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+            <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+            <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+            <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+            <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+        </resultMap>
+        <sql id="Base_Column_List6">
+    Code, CompanyCode, Caliber, Material, PressureMin, PressureMax, Creator, CreateTime,
+    Modifier, ModifyTime, ValidStatus
+  </sql>
+
+
+
+
+
+    <resultMap id="BaseResultMap7" type="com.sk.waternetwork.model.WaterMeterWarningThreshold">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="Caliber" jdbcType="NVARCHAR" property="caliber" />
+        <result column="Material" jdbcType="NVARCHAR" property="material" />
+        <result column="FlowMin" jdbcType="NVARCHAR" property="flowmin" />
+        <result column="FlowMax" jdbcType="NVARCHAR" property="flowmax" />
+        <result column="TemperatureMin" jdbcType="NVARCHAR" property="temperaturemin" />
+        <result column="TemperatureMax" jdbcType="NVARCHAR" property="temperaturemax" />
+        <result column="PressureMin" jdbcType="NVARCHAR" property="pressuremin" />
+        <result column="PressureMax" jdbcType="NVARCHAR" property="pressuremax" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+    <sql id="Base_Column_List7">
+    Code, CompanyCode, Caliber, Material, FlowMin, FlowMax, TemperatureMin, TemperatureMax,
+    PressureMin, PressureMax, Creator, CreateTime, Modifier, ModifyTime, ValidStatus
+  </sql>
+
+
+
+
+
+
+
+    <resultMap id="BaseResultMap8" type="com.sk.waternetwork.model.WaterpumpWarningThreshold">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="Caliber" jdbcType="NVARCHAR" property="caliber" />
+        <result column="Material" jdbcType="NVARCHAR" property="material" />
+        <result column="ExportPressureMin" jdbcType="NVARCHAR" property="exportpressuremin" />
+        <result column="ExportPressureMax" jdbcType="NVARCHAR" property="exportpressuremax" />
+        <result column="InstantaneousFlowMin" jdbcType="NVARCHAR" property="instantaneousflowmin" />
+        <result column="InstantaneousFlowMax" jdbcType="NVARCHAR" property="instantaneousflowmax" />
+        <result column="CumulativeFlowMin" jdbcType="NVARCHAR" property="cumulativeflowmin" />
+        <result column="CumulativeFlowMax" jdbcType="NVARCHAR" property="cumulativeflowmax" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+    <sql id="Base_Column_List8">
+    Code, CompanyCode, Caliber, Material, ExportPressureMin, ExportPressureMax, InstantaneousFlowMin,
+    InstantaneousFlowMax, CumulativeFlowMin, CumulativeFlowMax, Creator, CreateTime,
+    Modifier, ModifyTime, ValidStatus
+  </sql>
+
+
+
+
+
+
+
+    <resultMap id="BaseResultMap9" type="com.sk.waternetwork.model.WaterQualityWarningThreshold">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="Type" jdbcType="INTEGER" property="type" />
+        <result column="PHMin" jdbcType="NVARCHAR" property="phmin" />
+        <result column="PHMax" jdbcType="NVARCHAR" property="phmax" />
+        <result column="ResidualChlorineMin" jdbcType="NVARCHAR" property="residualchlorinemin" />
+        <result column="ResidualChlorineMax" jdbcType="NVARCHAR" property="residualchlorinemax" />
+        <result column="ConductivityMin" jdbcType="NVARCHAR" property="conductivitymin" />
+        <result column="ConductivityMax" jdbcType="NVARCHAR" property="conductivitymax" />
+        <result column="DissolvedOxygenMin" jdbcType="NVARCHAR" property="dissolvedoxygenmin" />
+        <result column="DissolvedOxygenMax" jdbcType="NVARCHAR" property="dissolvedoxygenmax" />
+        <result column="TemperatureMin" jdbcType="NVARCHAR" property="temperaturemin" />
+        <result column="TemperatureMax" jdbcType="NVARCHAR" property="temperaturemax" />
+        <result column="PressureMin" jdbcType="NVARCHAR" property="pressuremin" />
+        <result column="PressureMax" jdbcType="NVARCHAR" property="pressuremax" />
+        <result column="ORPMin" jdbcType="NVARCHAR" property="orpmin" />
+        <result column="ORPMax" jdbcType="NVARCHAR" property="orpmax" />
+        <result column="TurbidityMin" jdbcType="NVARCHAR" property="turbiditymin" />
+        <result column="TurbidityMax" jdbcType="NVARCHAR" property="turbiditymax" />
+        <result column="AmmoniaNitrogenMin" jdbcType="NVARCHAR" property="ammonianitrogenmin" />
+        <result column="AmmoniaNitrogenMax" jdbcType="NVARCHAR" property="ammonianitrogenmax" />
+        <result column="SalinityMin" jdbcType="NVARCHAR" property="salinitymin" />
+        <result column="SalinityMax" jdbcType="NVARCHAR" property="salinitymax" />
+        <result column="WaterHardnessMin" jdbcType="NVARCHAR" property="waterhardnessmin" />
+        <result column="WaterHardnessMax" jdbcType="NVARCHAR" property="waterhardnessmax" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+    <sql id="Base_Column_List9">
+    Code, CompanyCode, Type, PHMin, PHMax, ResidualChlorineMin, ResidualChlorineMax,
+    ConductivityMin, ConductivityMax, DissolvedOxygenMin, DissolvedOxygenMax, TemperatureMin,
+    TemperatureMax, PressureMin, PressureMax, ORPMin, ORPMax, TurbidityMin, TurbidityMax,
+    AmmoniaNitrogenMin, AmmoniaNitrogenMax, SalinityMin, SalinityMax, WaterHardnessMin,
+    WaterHardnessMax, Creator, CreateTime, Modifier, ModifyTime, ValidStatus
+  </sql>
+
+
+
+
+
+    <resultMap id="BaseResultMap10" type="com.sk.waternetwork.model.ValveWarningThreshold">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="Caliber" jdbcType="NVARCHAR" property="caliber" />
+        <result column="Material" jdbcType="NVARCHAR" property="material" />
+        <result column="PressureMin" jdbcType="NVARCHAR" property="pressuremin" />
+        <result column="PressureMax" jdbcType="NVARCHAR" property="pressuremax" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+    <sql id="Base_Column_List10">
+    Code, CompanyCode, Caliber, Material, PressureMin, PressureMax, Creator, CreateTime,
+    Modifier, ModifyTime, ValidStatus
+  </sql>-->
+
+
+<!--站点绑定设备-->
+    <resultMap id="BaseResultMap11" type="com.sk.waternetwork.model.SiteEquipmentRelationship">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="SiteCode" jdbcType="NVARCHAR" property="sitecode" />
+        <result column="EquipmentCode" jdbcType="NVARCHAR" property="equipmentcode" />
+        <result column="Type" jdbcType="INTEGER" property="type" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+    <sql id="Base_Column_List11">
+    Code, SiteCode, EquipmentCode, Type, Creator, CreateTime, Modifier, ModifyTime,
+    ValidStatus
+  </sql>
+   <delete id="deleteSiteAndEquipmentBySiteCode"  parameterType="java.lang.String" >
+
+       delete from waternetDB..SiteEquipmentRelationship
+       where  SiteCode=#{sitecode,jdbcType=NVARCHAR}
+   </delete>
+    <delete id="deleteRelationshipByEquipmentCode"  parameterType="java.lang.String" >
+
+       delete from waternetDB..SiteEquipmentRelationship
+       where  EquipmentCode=#{equipmentcode,jdbcType=NVARCHAR}
+   </delete>
+
+    <insert id="insertSiteAndEquipmentRelationship" parameterType="com.sk.waternetwork.model.SiteEquipmentRelationship">
+        insert into waternetDB..SiteEquipmentRelationship (Code, EquipmentCode, SiteCode,Type,
+        Creator, CreateTime, ValidStatus)
+        values
+        <foreach collection="list" item="wdSolr" index="index"
+                 separator=",">
+            (#{wdSolr.code},#{wdSolr.equipmentcode},#{wdSolr.sitecode},#{wdSolr.type},#{wdSolr.creator},
+            #{wdSolr.createtime},#{wdSolr.validstatus})
+        </foreach>
+    </insert>
+
+    <select id="selectBindEquipmentSiteBySiteCode" resultMap="BaseResultMap11">
+        select
+        <include refid="Base_Column_List11"/>
+        from  waternetDB..SiteEquipmentRelationship
+        where SiteCode=#{sitecode,jdbcType=NVARCHAR}
+    </select>
+
+
+
+
+    <resultMap id="BaseResultMapparam" type="com.sk.waternetwork.model.EquipmentParam">
+        <id column="Code" jdbcType="NVARCHAR" property="code" />
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode" />
+        <result column="EquipmentCode" jdbcType="NVARCHAR" property="equipmentcode" />
+        <result column="ParamField" jdbcType="NVARCHAR" property="paramfield" />
+        <result column="ParamName" jdbcType="NVARCHAR" property="paramname" />
+        <result column="ThresholdMax" jdbcType="DOUBLE" property="thresholdmax" />
+        <result column="ThresholdMin" jdbcType="DOUBLE" property="thresholdmin" />
+        <result column="Unit" jdbcType="NVARCHAR" property="unit" />
+        <result column="Creator" jdbcType="NVARCHAR" property="creator" />
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier" />
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus" />
+    </resultMap>
+    <sql id="Base_Column_Listparam">
+    Code, CompanyCode, EquipmentCode, ParamField, ParamName, ThresholdMax, ThresholdMin,
+    Unit, Creator, CreateTime, Modifier, ModifyTime, ValidStatus
+  </sql>
+    <delete id="deleteEquipmentParamByEquipmentCode"  parameterType="java.lang.String" >
+
+       delete from waternetDB..EquipmentParam
+       where  EquipmentCode=#{equipmentcode,jdbcType=NVARCHAR}
+   </delete>
+
+
+
+    <insert id="insertEquipmentParamByList" parameterType="com.sk.waternetwork.model.EquipmentParam">
+        insert into waternetDB..EquipmentParam (Code, EquipmentCode, CompanyCode,ParamField,
+        Creator, CreateTime, ValidStatus,ParamName,ThresholdMax,ThresholdMin,Unit)
+        values
+        <foreach collection="list" item="wdSolr" index="index"
+                 separator=",">
+            (#{wdSolr.code},#{wdSolr.equipmentcode},#{wdSolr.companycode},#{wdSolr.paramfield},
+            #{wdSolr.creator},#{wdSolr.createtime},#{wdSolr.validstatus},#{wdSolr.paramname},#{wdSolr.thresholdmax},
+            #{wdSolr.thresholdmin},#{wdSolr.unit})
+        </foreach>
+    </insert>
+
+    <select id="selectEquipmentParamByEquipment"   resultMap="BaseResultMapparam">
+        select
+        <include refid="Base_Column_Listparam" />
+        from waternetDB..EquipmentParam
+        where  EquipmentCode=#{equipmentcode,jdbcType=NVARCHAR}
+
+    </select>
+
+
+<update id="updateEquipmentParamByCode" parameterType="java.lang.String">
+    update waternetDB..EquipmentParam
+    set
+    ValidStatus = 0
+    where
+ <foreach collection="list" item="wdSolr" index="index"  separator=",">
+
+    Code=#{wdSolr,jdbcType=NVARCHAR}
+ </foreach>
+
+
+</update>
+
+
+
+<!--水泵和水泵参数-->
+<insert id="insertWaterpump" parameterType="com.sk.waternetwork.viewModel.SaveWaterPumpParamViewModel">
+    insert into waternetDB..Waterpump
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="code != null">
+            Code,
+        </if>
+        <if test="name != null">
+            Name,
+        </if>
+        <if test="companycode != null">
+            CompanyCode,
+        </if>
+        <if test="devicecode != null">
+            DeviceCode,
+        </if>
+        <if test="manufactor != null">
+            Manufactor,
+        </if>
+        <if test="modelnumber != null">
+            ModelNumber,
+        </if>
+        <if test="caliber != null">
+            Caliber,
+        </if>
+        <if test="material != null">
+            Material,
+        </if>
+        <if test="gis != null">
+            Gis,
+        </if>
+        <if test="address != null">
+            Address,
+        </if>
+        <if test="state != null">
+            State,
+        </if>
+        <if test="creator != null">
+            Creator,
+        </if>
+        <if test="createtime != null">
+            CreateTime,
+        </if>
+        <if test="modifier != null">
+            Modifier,
+        </if>
+        <if test="modifytime != null">
+            ModifyTime,
+        </if>
+        <if test="validstatus != null">
+            ValidStatus,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="code != null">
+            #{code,jdbcType=NVARCHAR},
+        </if>
+        <if test="name != null">
+            #{name,jdbcType=NVARCHAR},
+        </if>
+        <if test="companycode != null">
+            #{companycode,jdbcType=NVARCHAR},
+        </if>
+        <if test="devicecode != null">
+            #{devicecode,jdbcType=NVARCHAR},
+        </if>
+        <if test="manufactor != null">
+            #{manufactor,jdbcType=NVARCHAR},
+        </if>
+        <if test="modelnumber != null">
+            #{modelnumber,jdbcType=NVARCHAR},
+        </if>
+        <if test="caliber != null">
+            #{caliber,jdbcType=NVARCHAR},
+        </if>
+        <if test="material != null">
+            #{material,jdbcType=NVARCHAR},
+        </if>
+        <if test="gis != null">
+            #{gis,jdbcType=NVARCHAR},
+        </if>
+        <if test="address != null">
+            #{address,jdbcType=NVARCHAR},
+        </if>
+        <if test="state != null">
+            #{state,jdbcType=INTEGER},
+        </if>
+        <if test="creator != null">
+            #{creator,jdbcType=NVARCHAR},
+        </if>
+        <if test="createtime != null">
+            #{createtime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="modifier != null">
+            #{modifier,jdbcType=NVARCHAR},
+        </if>
+        <if test="modifytime != null">
+            #{modifytime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="validstatus != null">
+            #{validstatus,jdbcType=INTEGER},
+        </if>
+    </trim>
+
+
+
+
+</insert>
+
+
+
+
+
+    <update id="updateWaterpump" parameterType="com.sk.waternetwork.viewModel.SaveWaterPumpParamViewModel">
+        update waternetDB..Waterpump
+
+        <set>
+            <if test="name != null">
+                Name = #{name,jdbcType=NVARCHAR},
+            </if>
+            <if test="companycode != null">
+                CompanyCode = #{companycode,jdbcType=NVARCHAR},
+            </if>
+            <if test="devicecode != null">
+                DeviceCode = #{devicecode,jdbcType=NVARCHAR},
+            </if>
+            <if test="manufactor != null">
+                Manufactor = #{manufactor,jdbcType=NVARCHAR},
+            </if>
+            <if test="modelnumber != null">
+                ModelNumber = #{modelnumber,jdbcType=NVARCHAR},
+            </if>
+            <if test="caliber != null">
+                Caliber = #{caliber,jdbcType=NVARCHAR},
+            </if>
+            <if test="material != null">
+                Material = #{material,jdbcType=NVARCHAR},
+            </if>
+            <if test="gis != null">
+                Gis = #{gis,jdbcType=NVARCHAR},
+            </if>
+            <if test="address != null">
+                Address = #{address,jdbcType=NVARCHAR},
+            </if>
+            <if test="state != null">
+                State = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                Creator = #{creator,jdbcType=NVARCHAR},
+            </if>
+            <if test="createtime != null">
+                CreateTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                Modifier = #{modifier,jdbcType=NVARCHAR},
+            </if>
+            <if test="modifytime != null">
+                ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="validstatus != null">
+                ValidStatus = #{validstatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        where Code = #{code,jdbcType=NVARCHAR}
+    </update>
+
+
+<!--水表和水表参数-->
+    <insert id="insertWater" parameterType="com.sk.waternetwork.viewModel.SaveWaterParamViewModel">
+        insert into waternetDB..Water
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                Code,
+            </if>
+            <if test="name != null">
+                Name,
+            </if>
+            <if test="companycode != null">
+                CompanyCode,
+            </if>
+            <if test="devicecode != null">
+                DeviceCode,
+            </if>
+            <if test="manufactor != null">
+                Manufactor,
+            </if>
+            <if test="modelnumber != null">
+                ModelNumber,
+            </if>
+            <if test="caliber != null">
+                Caliber,
+            </if>
+            <if test="material != null">
+                Material,
+            </if>
+            <if test="gis != null">
+                Gis,
+            </if>
+            <if test="address != null">
+                Address,
+            </if>
+            <if test="state != null">
+                State,
+            </if>
+            <if test="creator != null">
+                Creator,
+            </if>
+            <if test="createtime != null">
+                CreateTime,
+            </if>
+            <if test="modifier != null">
+                Modifier,
+            </if>
+            <if test="modifytime != null">
+                ModifyTime,
+            </if>
+            <if test="validstatus != null">
+                ValidStatus,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                #{code,jdbcType=NVARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=NVARCHAR},
+            </if>
+            <if test="companycode != null">
+                #{companycode,jdbcType=NVARCHAR},
+            </if>
+            <if test="devicecode != null">
+                #{devicecode,jdbcType=NVARCHAR},
+            </if>
+            <if test="manufactor != null">
+                #{manufactor,jdbcType=NVARCHAR},
+            </if>
+            <if test="modelnumber != null">
+                #{modelnumber,jdbcType=NVARCHAR},
+            </if>
+            <if test="caliber != null">
+                #{caliber,jdbcType=NVARCHAR},
+            </if>
+            <if test="material != null">
+                #{material,jdbcType=NVARCHAR},
+            </if>
+            <if test="gis != null">
+                #{gis,jdbcType=NVARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=NVARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=NVARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=NVARCHAR},
+            </if>
+            <if test="modifytime != null">
+                #{modifytime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="validstatus != null">
+                #{validstatus,jdbcType=INTEGER},
+            </if>
+        </trim>
+
+
+
+
+    </insert>
+
+
+
+
+
+    <update id="updateWater" parameterType="com.sk.waternetwork.viewModel.SaveWaterParamViewModel">
+        update waternetDB..Water
+
+        <set>
+            <if test="name != null">
+                Name = #{name,jdbcType=NVARCHAR},
+            </if>
+            <if test="companycode != null">
+                CompanyCode = #{companycode,jdbcType=NVARCHAR},
+            </if>
+            <if test="devicecode != null">
+                DeviceCode = #{devicecode,jdbcType=NVARCHAR},
+            </if>
+            <if test="manufactor != null">
+                Manufactor = #{manufactor,jdbcType=NVARCHAR},
+            </if>
+            <if test="modelnumber != null">
+                ModelNumber = #{modelnumber,jdbcType=NVARCHAR},
+            </if>
+            <if test="caliber != null">
+                Caliber = #{caliber,jdbcType=NVARCHAR},
+            </if>
+            <if test="material != null">
+                Material = #{material,jdbcType=NVARCHAR},
+            </if>
+            <if test="gis != null">
+                Gis = #{gis,jdbcType=NVARCHAR},
+            </if>
+            <if test="address != null">
+                Address = #{address,jdbcType=NVARCHAR},
+            </if>
+            <if test="state != null">
+                State = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                Creator = #{creator,jdbcType=NVARCHAR},
+            </if>
+            <if test="createtime != null">
+                CreateTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                Modifier = #{modifier,jdbcType=NVARCHAR},
+            </if>
+            <if test="modifytime != null">
+                ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="validstatus != null">
+                ValidStatus = #{validstatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        where Code = #{code,jdbcType=NVARCHAR}
+    </update>
+
+
+
+    <!--流量计和流量计参数-->
+    <insert id="insertFlowMeter" parameterType="com.sk.waternetwork.viewModel.SaveFlowMeterParamViewModel">
+        insert into waternetDB..Flowmeter
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                Code,
+            </if>
+            <if test="name != null">
+                Name,
+            </if>
+            <if test="companycode != null">
+                CompanyCode,
+            </if>
+            <if test="devicecode != null">
+                DeviceCode,
+            </if>
+            <if test="manufactor != null">
+                Manufactor,
+            </if>
+            <if test="modelnumber != null">
+                ModelNumber,
+            </if>
+            <if test="caliber != null">
+                Caliber,
+            </if>
+            <if test="material != null">
+                Material,
+            </if>
+            <if test="gis != null">
+                Gis,
+            </if>
+            <if test="address != null">
+                Address,
+            </if>
+            <if test="state != null">
+                State,
+            </if>
+            <if test="creator != null">
+                Creator,
+            </if>
+            <if test="createtime != null">
+                CreateTime,
+            </if>
+            <if test="modifier != null">
+                Modifier,
+            </if>
+            <if test="modifytime != null">
+                ModifyTime,
+            </if>
+            <if test="validstatus != null">
+                ValidStatus,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                #{code,jdbcType=NVARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=NVARCHAR},
+            </if>
+            <if test="companycode != null">
+                #{companycode,jdbcType=NVARCHAR},
+            </if>
+            <if test="devicecode != null">
+                #{devicecode,jdbcType=NVARCHAR},
+            </if>
+            <if test="manufactor != null">
+                #{manufactor,jdbcType=NVARCHAR},
+            </if>
+            <if test="modelnumber != null">
+                #{modelnumber,jdbcType=NVARCHAR},
+            </if>
+            <if test="caliber != null">
+                #{caliber,jdbcType=NVARCHAR},
+            </if>
+            <if test="material != null">
+                #{material,jdbcType=NVARCHAR},
+            </if>
+            <if test="gis != null">
+                #{gis,jdbcType=NVARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=NVARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=NVARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=NVARCHAR},
+            </if>
+            <if test="modifytime != null">
+                #{modifytime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="validstatus != null">
+                #{validstatus,jdbcType=INTEGER},
+            </if>
+        </trim>
+
+
+    </insert>
+
+
+
+
+
+    <update id="updateFlowMeter" parameterType="com.sk.waternetwork.viewModel.SaveFlowMeterParamViewModel">
+        update waternetDB..Flowmeter
+
+        <set>
+            <if test="name != null">
+                Name = #{name,jdbcType=NVARCHAR},
+            </if>
+            <if test="companycode != null">
+                CompanyCode = #{companycode,jdbcType=NVARCHAR},
+            </if>
+            <if test="devicecode != null">
+                DeviceCode = #{devicecode,jdbcType=NVARCHAR},
+            </if>
+            <if test="manufactor != null">
+                Manufactor = #{manufactor,jdbcType=NVARCHAR},
+            </if>
+            <if test="modelnumber != null">
+                ModelNumber = #{modelnumber,jdbcType=NVARCHAR},
+            </if>
+            <if test="caliber != null">
+                Caliber = #{caliber,jdbcType=NVARCHAR},
+            </if>
+            <if test="material != null">
+                Material = #{material,jdbcType=NVARCHAR},
+            </if>
+            <if test="gis != null">
+                Gis = #{gis,jdbcType=NVARCHAR},
+            </if>
+            <if test="address != null">
+                Address = #{address,jdbcType=NVARCHAR},
+            </if>
+            <if test="state != null">
+                State = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                Creator = #{creator,jdbcType=NVARCHAR},
+            </if>
+            <if test="createtime != null">
+                CreateTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                Modifier = #{modifier,jdbcType=NVARCHAR},
+            </if>
+            <if test="modifytime != null">
+                ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="validstatus != null">
+                ValidStatus = #{validstatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        where Code = #{code,jdbcType=NVARCHAR}
+    </update>
+
+
+
+</mapper>

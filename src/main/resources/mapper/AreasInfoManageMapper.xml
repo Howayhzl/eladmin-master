@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sk.waternetwork.mapper.AreasInfoManageMapper">
+    <delete id="deleteAreasSiteRelationshipByAreaCode" parameterType="java.lang.String">
+        delete from waternetDB..AreasSiteRelationship
+        where AreaCode = #{code,jdbcType=NVARCHAR}
+    </delete>
+    <resultMap id="BaseResultMap" type="com.sk.waternetwork.model.Site">
+        <id column="Code" jdbcType="NVARCHAR" property="code"/>
+        <result column="Name" jdbcType="NVARCHAR" property="name"/>
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode"/>
+        <result column="Address" jdbcType="NVARCHAR" property="address"/>
+        <result column="Frequency" jdbcType="INTEGER" property="frequency"/>
+        <result column="Gis" jdbcType="NVARCHAR" property="gis"/>
+        <result column="Personliable" jdbcType="NVARCHAR" property="personliable"/>
+        <result column="Phone" jdbcType="NVARCHAR" property="phone"/>
+        <result column="Creator" jdbcType="NVARCHAR" property="creator"/>
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier"/>
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime"/>
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        Code, Name, CompanyCode, Address, Frequency, Gis, Personliable, Phone, Creator,
+        CreateTime, Modifier, ModifyTime, ValidStatus
+    </sql>
+    <select id="selectAreasSiteByAreaCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from waternetDB..Site
+        where Code
+        in (select SiteCode from waternetDB..AreasSiteRelationship where AreaCode =#{code,jdbcType=NVARCHAR})
+    </select>
+    <resultMap id="BaseResultMap1" type="com.sk.waternetwork.model.AreasInfo">
+        <id column="AreaCode" jdbcType="NVARCHAR" property="areacode"/>
+        <result column="AreaName" jdbcType="NVARCHAR" property="areaname"/>
+        <result column="CompanyCode" jdbcType="NVARCHAR" property="companycode"/>
+        <result column="ParentNode" jdbcType="NVARCHAR" property="parentnode"/>
+        <result column="PersonLiable" jdbcType="NVARCHAR" property="personliable"/>
+        <result column="Phone" jdbcType="NVARCHAR" property="phone"/>
+        <result column="Creator" jdbcType="NVARCHAR" property="creator"/>
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="Modifier" jdbcType="NVARCHAR" property="modifier"/>
+        <result column="ModifyTime" jdbcType="TIMESTAMP" property="modifytime"/>
+        <result column="ValidStatus" jdbcType="INTEGER" property="validstatus"/>
+    </resultMap>
+    <sql id="Base_Column_List1">
+        AreaCode, AreaName, CompanyCode, ParentNode, PersonLiable, Phone, Creator, CreateTime,
+        Modifier, ModifyTime, ValidStatus
+    </sql>
+    <select id="selectAreasByParentNode" parameterType="java.lang.String" resultMap="BaseResultMap1">
+        select
+        <include refid="Base_Column_List1"/>
+        from waternetDB..AreasInfo
+        where ParentNode = #{code,jdbcType=NVARCHAR}
+    </select>
+    <insert id="insertAreasSiteRelationship" parameterType="com.sk.waternetwork.model.AreasSiteRelationship">
+        insert into waternetDB..AreasSiteRelationship (Code, AreaCode, SiteCode,
+        Creator, CreateTime, ValidStatus)
+        values
+        <foreach collection="list" item="wdSolr" index="index"
+                 separator=",">
+            (#{wdSolr.code},#{wdSolr.areacode},#{wdSolr.sitecode},#{wdSolr.creator},
+            #{wdSolr.createtime},#{wdSolr.validstatus})
+        </foreach>
+    </insert>
+    <select id="getAreaCodeByParentNode" parameterType="java.lang.String" resultType="java.lang.String">
+        select
+        AreaCode
+        from AreasInfo
+        where ParentNode in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <delete id="deleteAreasByAreaCode" parameterType="java.lang.String">
+        delete from waternetDB..AreasInfo
+        where AreaCode in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <delete id="deleteAreasSiteRelationshipByAreaCodes" parameterType="java.lang.String">
+        delete from waternetDB..AreasSiteRelationship
+        where AreaCode in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <insert id="insertAreas" parameterType="com.sk.waternetwork.viewModel.SaveAreasViewModel">
+        insert into waternetDB..AreasInfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areacode != null">
+                AreaCode,
+            </if>
+            <if test="areaname != null">
+                AreaName,
+            </if>
+            <if test="companycode != null">
+                CompanyCode,
+            </if>
+            <if test="parentnode != null">
+                ParentNode,
+            </if>
+            <if test="personliable != null">
+                PersonLiable,
+            </if>
+            <if test="phone != null">
+                Phone,
+            </if>
+            <if test="creator != null">
+                Creator,
+            </if>
+            <if test="createtime != null">
+                CreateTime,
+            </if>
+            <if test="modifier != null">
+                Modifier,
+            </if>
+            <if test="modifytime != null">
+                ModifyTime,
+            </if>
+            <if test="validstatus != null">
+                ValidStatus,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="areacode != null">
+                #{areacode,jdbcType=NVARCHAR},
+            </if>
+            <if test="areaname != null">
+                #{areaname,jdbcType=NVARCHAR},
+            </if>
+            <if test="companycode != null">
+                #{companycode,jdbcType=NVARCHAR},
+            </if>
+            <if test="parentnode != null">
+                #{parentnode,jdbcType=NVARCHAR},
+            </if>
+            <if test="personliable != null">
+                #{personliable,jdbcType=NVARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=NVARCHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=NVARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=NVARCHAR},
+            </if>
+            <if test="modifytime != null">
+                #{modifytime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="validstatus != null">
+                #{validstatus,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.sk.waternetwork.model.AreasInfo">
+        update waternetDB..AreasInfo
+        <set>
+            <if test="areaname != null">
+                AreaName = #{areaname,jdbcType=NVARCHAR},
+            </if>
+            <!--<if test="companycode != null">
+              CompanyCode = #{companycode,jdbcType=NVARCHAR},
+            </if>-->
+            <if test="parentnode != null and parentnode !=''">
+                ParentNode = #{parentnode,jdbcType=NVARCHAR},
+            </if>
+            <if test="personliable != null">
+                PersonLiable = #{personliable,jdbcType=NVARCHAR},
+            </if>
+            <if test="phone != null">
+                Phone = #{phone,jdbcType=NVARCHAR},
+            </if>
+            <!--<if test="creator != null">
+              Creator = #{creator,jdbcType=NVARCHAR},
+            </if>
+            <if test="createtime != null">
+              CreateTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>-->
+            <if test="modifier != null">
+                Modifier = #{modifier,jdbcType=NVARCHAR},
+            </if>
+            <if test="modifytime != null">
+                ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="validstatus != null">
+                ValidStatus = #{validstatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        where AreaCode = #{areacode,jdbcType=NVARCHAR}
+    </update>
+    <update id="updateAreas" parameterType="com.sk.waternetwork.viewModel.SaveAreasViewModel">
+        update waternetDB..AreasInfo
+        <set>
+            <if test="areaname != null">
+                AreaName = #{areaname,jdbcType=NVARCHAR},
+            </if>
+            <!--<if test="companycode != null">
+              CompanyCode = #{companycode,jdbcType=NVARCHAR},
+            </if>-->
+            <if test="parentnode != null and parentnode !=''">
+                ParentNode = #{parentnode,jdbcType=NVARCHAR},
+            </if>
+            <if test="personliable != null">
+                PersonLiable = #{personliable,jdbcType=NVARCHAR},
+            </if>
+            <if test="phone != null">
+                Phone = #{phone,jdbcType=NVARCHAR},
+            </if>
+            <!--<if test="creator != null">
+              Creator = #{creator,jdbcType=NVARCHAR},
+            </if>
+            <if test="createtime != null">
+              CreateTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>-->
+            <if test="modifier != null">
+                Modifier = #{modifier,jdbcType=NVARCHAR},
+            </if>
+            <if test="modifytime != null">
+                ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="validstatus != null">
+                ValidStatus = #{validstatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        where AreaCode = #{areacode,jdbcType=NVARCHAR}
+    </update>
+</mapper>

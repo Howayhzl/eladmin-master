@@ -74,6 +74,7 @@
             <artifactId>jackson-dataformat-yaml</artifactId>
         </dependency>
         <!-- Needed for Async Logging with Log4j 2 -->
+        <!--加一个备注-->
         <dependency>
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
